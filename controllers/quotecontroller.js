@@ -1,8 +1,10 @@
 const router = require('express').Router();
 const Quote = require('../db').import('../models/quotes');
+const validateSession =require('../middleware/validate-session')
 
 // GET ALL
-router.get('/', (req, res) => { 
+router.get('/',validateSession, (req, res) => { 
+    
     Quote.findAll()
         .then(quote => res.status(200).json(quote))
         .catch(err => res.status(500).json({
@@ -13,11 +15,12 @@ router.get('/', (req, res) => {
 
 
 // POST
-router.post('/', (req, res) => {
+router.post('/', validateSession, (req, res) => {
+    
     const quoteFromRequest = {
         quote: req.body.quote,
         author: req.body.author,
-        owner: req.body.owner
+       
         
     }
 
@@ -29,7 +32,7 @@ router.post('/', (req, res) => {
 
 
 // UPDATE BY ID
-router.put('/:id', (req, res) => {
+router.put('/:id',validateSession, (req, res) => {
     Quote.update(req.body, {
         where: {
             id: req.params.id
@@ -42,7 +45,7 @@ router.put('/:id', (req, res) => {
 })
 
 // DELETE BY ID
-router.delete('/:id', (req, res) => {
+router.delete('/:id',validateSession, (req, res) => {
     Quote.destroy({
         where: {
             id: req.params.id
