@@ -19,9 +19,7 @@ router.post('/', validateSession, (req, res) => {
     
     const quoteFromRequest = {
         quote: req.body.quote,
-        author: req.body.author,
-       
-        
+        author: req.body.author   
     }
 
     Quote.create(quoteFromRequest)
